@@ -2,10 +2,12 @@
 R Shiny code for PhycoCanopy macroalgal simulation
 
 The libraries for shiny and REdaS should be loaded first in R or RStudio
+
 library(shiny) 
 library(REdaS) 
 
 The following code will load the PhycoCanopy app when executed in R
+
 runGitHub("PhycoCanopy","mar-env",ref="main")
 
 The programme will not calculate if depth and tidal settings cause the water depth over the point where the algae are attached to exceed 10 m.
