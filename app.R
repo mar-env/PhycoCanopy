@@ -1,6 +1,6 @@
 library(shiny)
 
-# Define UI for app that draws a histogram ----
+# Define UI for app that has prameter sliders and output window ----
 ui <- fluidPage(
   
   # App title ----
@@ -14,88 +14,118 @@ ui <- fluidPage(
       
       # Input on sliders # default species is F serratus
       sliderInput(inputId = "a.intercept",
-                  label = "allometry intercept",
+                  label = "Allometry intercept",
                   min = -5,
                   max = 1,
                   step = 0.01,
                   value = 0.21),
       sliderInput(inputId = "b.slope",
-                  label = "allometry slope",
+                  label = "Allometry slope",
                   min = 1,
                   step = 0.01,
                   max = 4.6,
                   value = 2.85),
-      sliderInput(inputId = "Pmax",
-                  label = "Max photosyn rate",
-                  min = 1,
-                  max = 15,
-                  step = 0.1,
-                  value = 7),
-      sliderInput(inputId = "Pmax.slope",
-                  label = "rate of change in photosynthesis in air with water content",
-                  min = 0,
-                  max = 0.02,
-                  step = 0.001,
-                  value = 0.015),
-      sliderInput(inputId = "Pmax.intercept",
-                  label = "intecept for photosynthesis in air with water content",
-                  min = -1,
-                  max = 1,
-                  step = 0.01,
-                  value = -0.236),
-      sliderInput(inputId = "alpha",
-                  label = "initial slope PI curve",
+      sliderInput(inputId = "kappa",
+                  label = "Canopy attenuation coefficient: kappa",
                   min = 0.01,
-                  max = 1,
+                  max = 3,
                   step = 0.01,
-                  value = 0.05),
+                  value = 0.5),
+      sliderInput(inputId = "daylength",
+                  label = "Daylength",
+                  min = 1,
+                  max = 24,
+                  step = 0.5,
+                  value = 12),
+      sliderInput(inputId = "Days",
+                  label = "Days simulated",
+                  min = 1,
+                  max = 14,
+                  step = 1,
+                  value = 1),
       sliderInput(inputId = "n.fronds",
-                  label = "frond density per m",
+                  label = "Density of fronds",
                   min = 1,
                   max = 1000,
                   value = 100),
-      sliderInput(inputId = "f.mean",
-                  label = "mean frond height",
-                  min = 0.01,
-                  max = 5,
-                  step = 0.01,
-                  value = 0.25),
+      sliderInput(inputId = "D.rate",
+                  label = "Desiccation rate: d",
+                  min = 0,
+                  max = 2*10^-4,
+                  step = 10^-5,
+                  value = 1.17*10^-4),
       sliderInput(inputId = "f.sd",
-                  label = "sd frond height",
+                  label = "Frond height SD",
                   min = 0,
                   max = 1,
                   step = 0.01,
                   value = 0),
-      sliderInput(inputId = "TSM",
-                  label = "thallus specific mass",
-                  min = 50,
-                  max = 1000,
-                  step = 1,
-                  value = 168),
-      sliderInput(inputId = "resp",
-                  label = "respiration rate",
-                  min = 0,
-                  max = 0.05,
-                  step = 0.001,
-                  value = 0.002),
-      sliderInput(inputId = "recovery.threshold",
-                  label = "threshold for desiccation recovery",
-                  min = 0,
-                  max = 60,
-                  step = 5,
-                  value = 40),
       sliderInput(inputId = "shore.level",
-                  label = "height of algae relative to LAT",
+                  label = "Height of algae relative to LAT",
                   min = -5,
                   max = 5,
                   step = 0.1,
                   value = 0),
+      sliderInput(inputId = "hydration",
+                  label = "Hydration rate",
+                  min = 0,
+                  max = 6,
+                  step = 0.1,
+                  value = 1),
+      sliderInput(inputId = "alpha",
+                  label = "Initial slope PI curve: alpha",
+                  min = 0.01,
+                  max = 1,
+                  step = 0.01,
+                  value = 0.05),
+      sliderInput(inputId = "Pmax.intercept",
+                  label = "Intecept for photosynthesis in air with water content: c",
+                  min = -1,
+                  max = 1,
+                  step = 0.01,
+                  value = -0.236),
       sliderInput(inputId = "M2.amplitude",
                   label = "M2 tidal amplitude (m)",
                   min = 0,
                   max = 5,
                   step = 0.1,
                   value = 0),
+      sliderInput(inputId = "Pmax",
+                  label = "Maximum gross photosynthetic rate: Pmax",
+                  min = 1,
+                  max = 15,
+                  step = 0.1,
+                  value = 7),
+      sliderInput(inputId = "f.mean",
+                  label = "Mean frond height",
+                  min = 0.01,
+                  max = 5,
+                  step = 0.01,
+                  value = 0.25),
+      sliderInput(inputId = "Isurf",
+                  label = "Midday irradiance (PAR)",
+                  min = 0,
+                  max = 2500,
+                  step = 1,
+                  value = 1600),
+      sliderInput(inputId = "Pmax.slope",
+                  label = "Rate of change in photosynthesis in air with water content: d",
+                  min = 0,
+                  max = 0.02,
+                  step = 0.001,
+                  value = 0.015),
+      sliderInput(inputId = "recovery.threshold",
+                  label = "Recovery threshold from desiccation",
+                  min = 0,
+                  max = 60,
+                  step = 5,
+                  value = 40),
+      sliderInput(inputId = "resp",
+                  label = "Respiration rate: r",
+                  min = 0,
+                  max = 0.05,
+                  step = 0.001,
+                  value = 0.002),
       sliderInput(inputId = "S2.amplitude",
                   label = "S2 tidal amplitude (m)",
                   min = 0,
@@ -108,43 +138,18 @@ ui <- fluidPage(
                   max = 360,
                   step = 10,
                   value = 0),
-      sliderInput(inputId = "daylength",
-                  label = "daylength",
-                  min = 1,
-                  max = 24,
-                  step = 0.5,
-                  value = 12),
-      sliderInput(inputId = "Isurf",
-                  label = "noon irradiance (PAR)",
-                  min = 1,
-                  max = 2500,
-                  step = 100,
-                  value = 1600),
-      sliderInput(inputId = "lamda",
-                  label = "water attenuation coefficient",
-                  min = 0.01,
-                  max = 3,
-                  step = 0.01,
-                  value = 0.7),
-      sliderInput(inputId = "kappa",
-                  label = "canopy attenuation coefficient",
-                  min = 0.01,
-                  max = 3,
-                  step = 0.01,
-                  value = 0.5),
-      sliderInput(inputId = "D.rate",
-                  label = "desiccation rate",
-                  min = 0,
-                  max = 2*10^-4,
-                  step = 10^-5,
-                  value = 1.17*10^-4),
-      sliderInput(inputId = "Days",
-                  label = "days simulated",
-                  min = 1,
-                  max = 14,
+      sliderInput(inputId = "TSM",
+                  label = "Thallus specific mass: tsm",
+                  min = 50,
+                  max = 1000,
                   step = 1,
-                  value = 1)
-      
+                  value = 168),
+      sliderInput(inputId = "lamda",
+                  label = "Water attenuation coefficient: lambda",
+                  min = 0.01,
+                  max = 3,
+                  step = 0.01,
+                  value = 0.7)
     ),
     
     # Main panel for displaying outputs ----
@@ -201,7 +206,7 @@ server <- function(input, output) {
     mat3<-mat2-mat1
     mat3<-1*(mat3>=0) #is 1 at all depths where the frond is there
     
-    # equation relatine frond area to length
+    # equation relating frond area to length
     a.intercept<-input$a.intercept #F serratus is set up when using the default parameters 
     b.slope<-input$b.slope
     area<-exp(a.intercept+b.slope*log(ht)) #area of fronds
@@ -215,11 +220,13 @@ server <- function(input, output) {
     
     canopy<-rowSums(area.slice.mat) #total canopy in each slice above seabed
     TAI<-sum(canopy) #(Thallus area index) area fronds per square metre of seabed
+    hydration<-input$hydration #rehydration rate of desiccated fronds, % rehydration per minute
    
     #shore level above LAT
     shore.level<- input$shore.level # defined by user, maximum (range- shore level) currently 9.99 m 
     water.content<-100
     min.water.content<-100
+    max.water.content<-100
     #timer
     timer<- 1
     
@@ -296,9 +303,9 @@ server <- function(input, output) {
       if(em.toggle==1) {sub.time<-0}
       if(em.toggle==2) {sub.time<-sub.time+1}
       if(em.toggle==2) {em.time<-0}
-      if (TAI>1) {dess.rate<-d.rate/TAI} #alters effective desiccation rate to accound for fronds sheltering each other
+      if (TAI>1) {dess.rate<-d.rate/TAI} #alters effective desiccation rate to account for fronds sheltering each other
       if (TAI<=1) {dess.rate<-d.rate}
-      if (wd==0) {water.content<-100*exp(-dess.rate*em.time*15*60)} 
+      if (wd==0) {water.content<-max.water.content*exp(-dess.rate*em.time*15*60)} #this was changed to deal with water content less than 100% at end of period of submersion
       if (water.content<min.water.content) {min.water.content<-water.content}
       
       # light part
@@ -321,8 +328,10 @@ server <- function(input, output) {
       Pmax.modifier<-min.water.content*(1/recovery.threshold) #Pmax restored from more than 40% desiccation (default value for the recovery threshold, can vary by species)
       if (Pmax.modifier>1) {Pmax.modifier<-1}
       Pmax.R<-Pmax*Pmax.modifier #altered P.max for recovery 
-      if (wd>0) {water.content<-water.content + 15} #90% recovery in 6 steps = 1.5 hours, this command needs to go after Pmax.D modifier if used, plus another equation for how P.max.d responds
+      if (wd>0) {water.content<-water.content + hydration*15} # default is 90% recovery in 6 steps = 1.5 hours
       if(water.content>100) {water.content<-100}
+      if(wd>0){max.water.content<-water.content}#new
+      
       if(wd>0){Pmax.R<-Pmax.R*water.content/100} #simple linear recovery of Pmax with hydration
       if(wd>0) {Pmax.D<-Pmax.R}
       
@@ -357,7 +366,10 @@ server <- function(input, output) {
     
     # integrated net photosynthesis
     int.net.psn<-(15*60/2)*(sum(data.view[,5])+sum(data.view[,5])-data.view[1,5]-data.view[nrow(data.view),5]) #converts time step to seconds
-    int.net.psn<-int.net.psn *12.011/(1000*1000) #g C m-2 
+    int.net.psn<-int.net.psn*12.011/(1000*1000) #g C m-2 
+    
+    #average photosynthesis include in 're' if wanted as an output
+    av.psn.net<-mean(data.view[,5])
     
     re <- as.data.frame(cbind(TAI,int.net.psn,Pmax.R))
     output$TAIcaption<-renderTable({ re })
