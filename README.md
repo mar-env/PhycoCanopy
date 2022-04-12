@@ -14,3 +14,4 @@ The programme will not calculate if depth and tidal settings cause the water dep
 
 Be (relatively) patient if you choose to simulate periods longer than 1 day. It can take 10 seconds to recalculate the response to changed parameters for a 14 day simulation (3.1 GHz clock speed computer).
 
+Units for irradiance in the published description https://doi.org/10.1111/2041-210X.13843 should be micro mol photon per metre squared per second. Milli mol photon is a typographic error
